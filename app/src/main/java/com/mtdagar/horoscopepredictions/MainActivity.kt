@@ -1,41 +1,44 @@
 package com.mtdagar.horoscopepredictions
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import okhttp3.*
-import org.json.JSONArray
+import com.google.gson.Gson
+import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
+import com.mtdagar.horoscopepredictions.models.HoroItem
+import com.mtdagar.horoscopepredictions.models.HoroStory
 import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
-    
+
+    lateinit var horoToday: HoroStory
+    lateinit var horoTomorrow: HoroStory
+    lateinit var horoYesterday: HoroStory
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AndroidNetworking.initialize(applicationContext);
-
-        val horoList = dummyList(20)
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
 
         recyclerView.adapter = HoroAdapter(signList())
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         recyclerView.setHasFixedSize(true)  //for optimization
 
 
-        //loadHoroscope()
+        AndroidNetworking.initialize(applicationContext);
+
+
+        loadHoroscope()
 
 
     }
@@ -49,6 +52,131 @@ class MainActivity : AppCompatActivity() {
         }
 
         return list
+    }
+
+    private fun horoStory(sign: String){
+
+        for(i in 0..2){
+
+
+            when(i){
+                0 -> {
+                    val day = "today"
+
+                    AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
+                        .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
+                        .addHeaders("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+                        .setPriority(Priority.MEDIUM)
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject) {
+
+                                val gson = Gson()
+
+                                //converting the weird JsonObject to Android readable Json object
+                                var responseJsonString = gson.toJson(HoroStory(
+                                    response.getString("color"),
+                                    response.getString("compatibility"),
+                                    response.getString("current_date"),
+                                    response.getString("date_range"),
+                                    response.getString("description"),
+                                    response.getString("lucky_number"),
+                                    response.getString("lucky_time"),
+                                    response.getString("mood")))
+
+
+                                horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
+
+                                Log.i("Response", horoToday.toString())
+
+                            }
+
+                            override fun onError(error: ANError) {
+                                Log.e("Error", error.toString())
+                                Toast.makeText(this@MainActivity, "Error fetching data", Toast.LENGTH_SHORT).show()
+                            }
+                        });
+                }
+
+                1 -> {
+                    val day = "tomorrow"
+
+                    AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
+                        .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
+                        .addHeaders("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+                        .setPriority(Priority.MEDIUM)
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject) {
+
+                                val gson = Gson()
+
+                                //converting the weird JsonObject to Android readable Json object
+                                var responseJsonString = gson.toJson(HoroStory(
+                                    response.getString("color"),
+                                    response.getString("compatibility"),
+                                    response.getString("current_date"),
+                                    response.getString("date_range"),
+                                    response.getString("description"),
+                                    response.getString("lucky_number"),
+                                    response.getString("lucky_time"),
+                                    response.getString("mood")))
+
+
+                                horoTomorrow = gson.fromJson(responseJsonString, HoroStory::class.java)
+
+                                Log.i("Response", horoTomorrow.toString())
+
+                            }
+
+                            override fun onError(error: ANError) {
+                                Log.e("Error", error.toString())
+                                Toast.makeText(this@MainActivity, "Error fetching data", Toast.LENGTH_SHORT).show()
+                            }
+                        });
+                }
+
+                2 -> {
+                    val day = "yesterday"
+
+                    AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
+                        .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
+                        .addHeaders("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+                        .setPriority(Priority.MEDIUM)
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject) {
+
+                                val gson = Gson()
+
+                                //converting the weird JsonObject to Android readable Json object
+                                var responseJsonString = gson.toJson(HoroStory(
+                                    response.getString("color"),
+                                    response.getString("compatibility"),
+                                    response.getString("current_date"),
+                                    response.getString("date_range"),
+                                    response.getString("description"),
+                                    response.getString("lucky_number"),
+                                    response.getString("lucky_time"),
+                                    response.getString("mood")))
+
+
+                                horoYesterday = gson.fromJson(responseJsonString, HoroStory::class.java)
+
+                                Log.i("Response", horoYesterday.toString())
+
+                            }
+
+                            override fun onError(error: ANError) {
+                                Log.e("Error", error.toString())
+                                Toast.makeText(this@MainActivity, "Error fetching data", Toast.LENGTH_SHORT).show()
+                            }
+                        });
+                }
+
+
+            }
+        }
     }
 
     private fun signList(): List<HoroItem>{
@@ -103,9 +231,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadHoroscope(){
 
-        val client = OkHttpClient()
+        val day = "today"
+        val sign = "libra"
 
-        AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=aquarius&day=today")
+        AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
+            .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
+            .addHeaders("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+            .setPriority(Priority.MEDIUM)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+
+                    val gson = Gson()
+
+                    //converting the weird JsonObject to Android readable Json object
+                    var responseJsonString = gson.toJson(HoroStory(
+                        response.getString("color"),
+                        response.getString("compatibility"),
+                        response.getString("current_date"),
+                        response.getString("date_range"),
+                        response.getString("description"),
+                        response.getString("lucky_number"),
+                        response.getString("lucky_time"),
+                        response.getString("mood")))
+
+
+                    horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
+
+                    Log.i("Response", horoToday.toString())
+
+                }
+
+                override fun onError(error: ANError) {
+                    Log.e("Error", error.toString())
+                }
+            });
+
+        /*AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=aquarius&day=today")
             .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
             .addHeaders("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
             .setPriority(Priority.MEDIUM)
@@ -120,40 +282,8 @@ class MainActivity : AppCompatActivity() {
                 }
             });
 
+         */
 
-        AndroidNetworking.get("https://fierce-cove-29863.herokuapp.com/getAllUsers/{pageNumber}")
-            .addPathParameter("pageNumber", "0")
-            .addQueryParameter("limit", "3")
-            .addHeaders("token", "1234")
-            .setTag("test")
-            .setPriority(Priority.LOW)
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray) {
-                    // do anything with response
-                }
-
-                override fun onError(error: ANError) {
-                    // handle error
-                }
-            })
-
-        /*val request = Request.Builder()
-            .url("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=aquarius&day=today")
-            .addHeader("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
-            .addHeader("x-rapidapi-host", "sameer-kumar-aztro-v1.p.rapidapi.com")
-            .build()
-
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Error","Failed to execute request")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body =  response?.body?.string()
-                Log.i("Response", body.toString())
-            }
-        })*/
     }
 
 }

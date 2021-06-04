@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/horo_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,25 +16,37 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        >
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/card_image"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_centerVertical="true"
             android:layout_margin="10dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_horoscope_card"
-
             />
+
+        <com.devlomi.circularstatusview.CircularStatusView
+            android:id="@+id/circular_status_view"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            app:portion_spacing="4dp"
+            app:portion_width="4dp"
+            app:portions_count="5" />
 
         <TextView
             android:id="@+id/card_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="12dp"
             android:layout_toEndOf="@id/card_image"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Today's Prediction"
             android:textSize="18sp" />
 
