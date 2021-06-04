@@ -38,8 +38,6 @@ class MainActivity : AppCompatActivity() {
         AndroidNetworking.initialize(applicationContext);
 
 
-        loadHoroscope()
-
 
     }
 
@@ -54,10 +52,9 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    private fun horoStory(sign: String){
+    fun fetchPredictions(sign: String){
 
         for(i in 0..2){
-
 
             when(i){
                 0 -> {
@@ -87,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
                                 horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                Log.i("Response", horoToday.toString())
+                                Log.i("Response Today ->", horoToday.toString())
 
                             }
 
@@ -125,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
                                 horoTomorrow = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                Log.i("Response", horoTomorrow.toString())
+                                Log.i("Response Tomorrow ->", horoTomorrow.toString())
 
                             }
 
@@ -163,7 +160,7 @@ class MainActivity : AppCompatActivity() {
 
                                 horoYesterday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                Log.i("Response", horoYesterday.toString())
+                                Log.i("Response Yesterday ->", horoYesterday.toString())
 
                             }
 

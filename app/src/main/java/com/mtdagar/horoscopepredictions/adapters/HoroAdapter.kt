@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.mtdagar.horoscopepredictions.MainActivity
 import com.mtdagar.horoscopepredictions.R
 import com.mtdagar.horoscopepredictions.models.HoroItem
 import java.util.*
@@ -29,7 +30,7 @@ class HoroAdapter(private val horoList: List<HoroItem>) : RecyclerView.Adapter<H
         holder.textView.text = currentItem.text
 
         holder.cardView.setOnClickListener{
-            //val myStories: ArrayList<MyStory> = ArrayList<MyStory>()
+            MainActivity().fetchPredictions(currentItem.text.lowercase())
         }
 
     }
