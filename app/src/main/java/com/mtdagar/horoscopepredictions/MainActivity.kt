@@ -15,6 +15,8 @@ import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.models.HoroItem
 import com.mtdagar.horoscopepredictions.models.HoroStory
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var horoTomorrow: HoroStory
     lateinit var horoYesterday: HoroStory
 
+    var loading: Boolean = false
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
 
-        recyclerView.adapter = HoroAdapter(signList())
+        recyclerView.adapter = HoroAdapter(signList(), supportFragmentManager)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)  //for optimization
 
@@ -282,5 +287,21 @@ class MainActivity : AppCompatActivity() {
          */
 
     }
+
+    fun getHoroImage(): String{
+        val url = "https://i.imgur.com/UgW8oFM.jpg"
+        return url
+    }
+
+    fun getHoroDescription(day: String): String{
+        return when(day) {
+            "today" -> horoToday.description
+            "tomorrow" -> horoTomorrow.description
+            "yesterday" -> horoYesterday.description
+            else -> horoToday.description
+        }
+    }
+
+
 
 }
