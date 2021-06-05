@@ -1,10 +1,12 @@
 package com.mtdagar.horoscopepredictions.adapters
 
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -32,6 +34,11 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
     lateinit var horoTomorrow: HoroStory
     lateinit var horoYesterday: HoroStory
 
+    var todayLoaded: Boolean = false
+    var tomorrowLoaded: Boolean = false
+    var yesterdayLoaded: Boolean = false
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoroViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.recycler_item,
@@ -48,21 +55,13 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
         holder.cardView.setOnClickListener{
 
-
-            //MainActivity().fetchPredictions(currentItem.text.lowercase())
-
             val myStories = ArrayList<MyStory>()
-
 
             for (i in 0..2) {
                 when(i){
                     0 -> {
                         val sign = currentItem.text.lowercase()
                         val day = "today"
-
-                        myStories.add(MyStory(MainActivity().getHoroImage(),
-                            Calendar.getInstance().time,
-                            "first"))
 
                         AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
                             .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
@@ -88,11 +87,13 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
                                     horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                    Log.i("Response Today ->", horoToday.toString())
 
-//                                    myStories.add(MyStory(MainActivity().getHoroImage(),
-//                                        Calendar.getInstance().time,
-//                                        horoToday.description))
+                                    Log.i("Response Today ->", horoToday.toString())
+                                    todayLoaded = true
+
+                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                        Calendar.getInstance().time,
+                                        "horoToday.description"))
 
 
 
@@ -104,15 +105,14 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
                                 }
                             });
+
+
                     }
 
                     1 -> {
                         val sign = currentItem.text.lowercase()
                         val day = "tomorrow"
 
-                        myStories.add(MyStory(MainActivity().getHoroImage(),
-                            Calendar.getInstance().time,
-                            "second"))
 
                         AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
                             .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
@@ -139,10 +139,11 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                                     horoTomorrow = gson.fromJson(responseJsonString, HoroStory::class.java)
 
                                     Log.i("Response Tomorrow ->", horoTomorrow.toString())
+                                    tomorrowLoaded = true
 
-//                                    myStories.add(MyStory(MainActivity().getHoroImage(),
-//                                        Calendar.getInstance().time,
-//                                        horoTomorrow.description))
+                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                        Calendar.getInstance().time,
+                                        horoTomorrow.description))
 
 
 
@@ -159,10 +160,6 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                     2 -> {
                         val sign = currentItem.text.lowercase()
                         val day = "yesterday"
-
-                        myStories.add(MyStory(MainActivity().getHoroImage(),
-                            Calendar.getInstance().time,
-                            "first"))
 
                         AndroidNetworking.post("https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=$sign&day=$day")
                             .addHeaders("x-rapidapi-key", "bfccabaa77mshfedf970e8177411p187c12jsnb66cf8271812")
@@ -189,10 +186,11 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                                     horoYesterday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
                                     Log.i("Response Yesterday ->", horoYesterday.toString())
+                                    yesterdayLoaded = true
 
-//                                    myStories.add(MyStory(MainActivity().getHoroImage(),
-//                                        Calendar.getInstance().time,
-//                                        horoYesterday.description))
+                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                        Calendar.getInstance().time,
+                                        horoYesterday.description))
 
 
                                 }
@@ -209,6 +207,8 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
             }
 
+
+            Thread.sleep(2000)
 
 
             StoryView.Builder(fragmentManager)
@@ -228,7 +228,6 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                 }) // Optional Listeners
                 .build() // Must be called before calling show method
                 .show()
-
 
 
         }
