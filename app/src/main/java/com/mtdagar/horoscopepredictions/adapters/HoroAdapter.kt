@@ -1,6 +1,5 @@
 package com.mtdagar.horoscopepredictions.adapters
 
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +56,8 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
 
         holder.cardView.setOnClickListener{
 
+            holder.progressBar.visibility = View.VISIBLE
+
             val myStories = ArrayList<MyStory>()
 
             for (i in 0..2) {
@@ -90,11 +91,13 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
 
                                     //Log.i("Response Today ->", horoToday.toString())
 
-                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                    myStories.add(MyStory("C:\Android\HoroscopePredictions\app\src\main\res\drawable",
                                         Calendar.getInstance().time,
                                         "0: ${horoToday.description}"))
 
                                     todayLoaded = true
+                                    if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
+                                        holder.progressBar.visibility = View.INVISIBLE
 
                                     signalChanged(currentSign, myStories)
 
@@ -145,6 +148,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
                                          "1: ${horoTomorrow.description}"))
 
                                     tomorrowLoaded = true
+                                    if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
+                                        holder.progressBar.visibility = View.INVISIBLE
+
                                     signalChanged(currentSign, myStories)
 
                                 }
@@ -191,6 +197,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
                                         "2: ${horoYesterday.description}"))
 
                                     yesterdayLoaded = true
+                                    if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
+                                        holder.progressBar.visibility = View.INVISIBLE
+
                                     signalChanged(currentSign, myStories)
 
                                 }
@@ -217,6 +226,7 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
         val imageView: ImageView = itemView.findViewById(R.id.card_image)
         val textView: TextView = itemView.findViewById(R.id.card_text)
         val cardView: CardView = itemView.findViewById(R.id.horo_card)
+        val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
     }
 
     private fun showStories(sign: String, list: ArrayList<MyStory>){
@@ -242,6 +252,5 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
     fun signalChanged(sign: String, list: ArrayList<MyStory>){
         if(todayLoaded && tomorrowLoaded && yesterdayLoaded) showStories(sign, list)
     }
-
 
 }
