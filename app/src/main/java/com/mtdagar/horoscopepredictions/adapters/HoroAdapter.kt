@@ -91,9 +91,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
 
                                     //Log.i("Response Today ->", horoToday.toString())
 
-                                    myStories.add(MyStory("C:\Android\HoroscopePredictions\app\src\main\res\drawable",
+                                    myStories.add(MyStory("https://raw.githubusercontent.com/mtdagar/HoroscopePredictions/main/app/src/main/res/drawable/image1.png",
                                         Calendar.getInstance().time,
-                                        "0: ${horoToday.description}"))
+                                        "Today: ${horoToday.description}"))
 
                                     todayLoaded = true
                                     if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
@@ -143,9 +143,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
                                     //Log.i("Response Tomorrow ->", horoTomorrow.toString())
 
 
-                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                    myStories.add(MyStory("https://raw.githubusercontent.com/mtdagar/HoroscopePredictions/main/app/src/main/res/drawable/image2.png",
                                         Calendar.getInstance().time,
-                                         "1: ${horoTomorrow.description}"))
+                                         "Tomorrow: ${horoTomorrow.description}"))
 
                                     tomorrowLoaded = true
                                     if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
@@ -192,9 +192,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
 
                                     //Log.i("Response Yesterday ->", horoYesterday.toString())
 
-                                    myStories.add(MyStory(MainActivity().getHoroImage(),
+                                    myStories.add(MyStory("https://raw.githubusercontent.com/mtdagar/HoroscopePredictions/main/app/src/main/res/drawable/image3.png",
                                         Calendar.getInstance().time,
-                                        "2: ${horoYesterday.description}"))
+                                        "Yesterday: ${horoYesterday.description}"))
 
                                     yesterdayLoaded = true
                                     if(todayLoaded && tomorrowLoaded && yesterdayLoaded)
