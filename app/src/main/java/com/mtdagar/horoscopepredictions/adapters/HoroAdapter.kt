@@ -28,7 +28,7 @@ import org.json.JSONObject
 import java.util.*
 
 
-class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: FragmentManager) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
+class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentManager: FragmentManager) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
 
     lateinit var horoToday: HoroStory
     lateinit var horoTomorrow: HoroStory
@@ -50,8 +50,10 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
     override fun onBindViewHolder(holder: HoroViewHolder, position: Int) {
         val currentItem = horoList[position]
 
+        val currentSign = currentItem.text
+
         holder.imageView.setImageResource(currentItem.imageResource)
-        holder.textView.text = currentItem.text
+        holder.textView.text = currentSign
 
         holder.cardView.setOnClickListener{
 
@@ -84,18 +86,17 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                                         response.getString("mood"))
                                     )
 
-
                                     horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-
-                                    Log.i("Response Today ->", horoToday.toString())
-                                    todayLoaded = true
+                                    //Log.i("Response Today ->", horoToday.toString())
 
                                     myStories.add(MyStory(MainActivity().getHoroImage(),
                                         Calendar.getInstance().time,
-                                        "horoToday.description"))
+                                        "0: ${horoToday.description}"))
 
+                                    todayLoaded = true
 
+                                    signalChanged(currentSign, myStories)
 
                                 }
 
@@ -105,8 +106,6 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
                                 }
                             });
-
-
                     }
 
                     1 -> {
@@ -138,14 +137,15 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
                                     horoTomorrow = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                    Log.i("Response Tomorrow ->", horoTomorrow.toString())
-                                    tomorrowLoaded = true
+                                    //Log.i("Response Tomorrow ->", horoTomorrow.toString())
+
 
                                     myStories.add(MyStory(MainActivity().getHoroImage(),
                                         Calendar.getInstance().time,
-                                        horoTomorrow.description))
+                                         "1: ${horoTomorrow.description}"))
 
-
+                                    tomorrowLoaded = true
+                                    signalChanged(currentSign, myStories)
 
                                 }
 
@@ -182,16 +182,16 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
                                             response.getString("mood"))
                                     )
 
-
                                     horoYesterday = gson.fromJson(responseJsonString, HoroStory::class.java)
 
-                                    Log.i("Response Yesterday ->", horoYesterday.toString())
-                                    yesterdayLoaded = true
+                                    //Log.i("Response Yesterday ->", horoYesterday.toString())
 
                                     myStories.add(MyStory(MainActivity().getHoroImage(),
                                         Calendar.getInstance().time,
-                                        horoYesterday.description))
+                                        "2: ${horoYesterday.description}"))
 
+                                    yesterdayLoaded = true
+                                    signalChanged(currentSign, myStories)
 
                                 }
 
@@ -207,29 +207,6 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
 
             }
 
-
-            Thread.sleep(2000)
-
-
-            StoryView.Builder(fragmentManager)
-                .setStoriesList(myStories) // Required
-                .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
-                .setTitleText(currentItem.text) // Default is Hidden
-                .setSubtitleText("") // Default is Hidden
-                .setTitleLogoUrl("") // Default is Hidden
-                .setStoryClickListeners(object : StoryClickListeners {
-                    override fun onDescriptionClickListener(position: Int) {
-                        //your action
-                    }
-
-                    override fun onTitleIconClickListener(position: Int) {
-                        //your action
-                    }
-                }) // Optional Listeners
-                .build() // Must be called before calling show method
-                .show()
-
-
         }
 
     }
@@ -241,5 +218,30 @@ class HoroAdapter(private val horoList: List<HoroItem>, val fragmentManager: Fra
         val textView: TextView = itemView.findViewById(R.id.card_text)
         val cardView: CardView = itemView.findViewById(R.id.horo_card)
     }
+
+    private fun showStories(sign: String, list: ArrayList<MyStory>){
+        StoryView.Builder(fragmentManager)
+            .setStoriesList(list) // Required
+            .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
+            .setTitleText(sign) // Default is Hidden
+            .setSubtitleText("") // Default is Hidden
+            .setTitleLogoUrl("") // Default is Hidden
+            .setStoryClickListeners(object : StoryClickListeners {
+                override fun onDescriptionClickListener(position: Int) {
+                    //your action
+                }
+
+                override fun onTitleIconClickListener(position: Int) {
+                    //your action
+                }
+            }) // Optional Listeners
+            .build() // Must be called before calling show method
+            .show()
+    }
+
+    fun signalChanged(sign: String, list: ArrayList<MyStory>){
+        if(todayLoaded && tomorrowLoaded && yesterdayLoaded) showStories(sign, list)
+    }
+
 
 }
