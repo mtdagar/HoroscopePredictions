@@ -85,6 +85,8 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
                                         response.getString("lucky_number"),
                                         response.getString("lucky_time"),
                                         response.getString("mood"))
+
+
                                     )
 
                                     horoToday = gson.fromJson(responseJsonString, HoroStory::class.java)
@@ -247,6 +249,10 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
             }) // Optional Listeners
             .build() // Must be called before calling show method
             .show()
+
+        todayLoaded = false
+        tomorrowLoaded = false
+        yesterdayLoaded = false
     }
 
     fun signalChanged(sign: String, list: ArrayList<MyStory>){
