@@ -1,29 +1,23 @@
 package com.mtdagar.horoscopepredictions
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.google.gson.Gson
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.models.HoroItem
-import com.mtdagar.horoscopepredictions.models.HoroStory
-import org.json.JSONObject
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
 
@@ -33,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
 
         AndroidNetworking.initialize(applicationContext);
+
 
     }
 
@@ -86,10 +81,7 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    fun getHoroImage(): String{
-        val url = "https://i.imgur.com/UgW8oFM.jpg"
-        return url
-    }
+
 
 
 
