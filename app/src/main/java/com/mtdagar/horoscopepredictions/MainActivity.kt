@@ -1,10 +1,10 @@
 package com.mtdagar.horoscopepredictions
 
+import android.net.Uri
 import android.os.Bundle
-import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
@@ -13,7 +13,6 @@ import com.mtdagar.horoscopepredictions.models.HoroItem
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), MainActivityInterface {
@@ -25,14 +24,11 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        //progressBar = findViewById(R.id.progressBar)
 
         recyclerView.adapter = HoroAdapter(signList(), this)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)  //for optimization
-
 
         AndroidNetworking.initialize(applicationContext);
 
@@ -89,12 +85,28 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
     }
 
     override fun popStory(sign: String, list: ArrayList<MyStory>){
+        var logoUrl: String = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
+        when(sign){
+            "aquarius" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
+            "aries" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aries_1}").toString()
+            "cancer" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.cancer_1}").toString()
+            "capricorn" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.capricornus_1}").toString()
+            "gemini" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.gemini_1}").toString()
+            "leo" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.leo_1}").toString()
+            "libra" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.libra_1}").toString()
+            "pisces" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.pisces_1}").toString()
+            "sagittarius" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.sagittarius_1}").toString()
+            "scorpio" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.scorpio_1}").toString()
+            "taurus" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.taurus_1}").toString()
+            "virgo" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.virgo_1}").toString()
+        }
+
         StoryView.Builder(supportFragmentManager)
             .setStoriesList(list) // Required
             .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
             .setTitleText(sign) // Default is Hidden
             .setSubtitleText("") // Default is Hidden
-            .setTitleLogoUrl("") // Default is Hidden
+            .setTitleLogoUrl(logoUrl) // Default is Hidden
             .setStoryClickListeners(object : StoryClickListeners {
                 override fun onDescriptionClickListener(position: Int) {
                     //your action
@@ -106,9 +118,6 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
             }) // Optional Listeners
             .build() // Must be called before calling show method
             .show()
-
-        //progressBar.visibility = View.INVISIBLE
-
     }
 
 }
