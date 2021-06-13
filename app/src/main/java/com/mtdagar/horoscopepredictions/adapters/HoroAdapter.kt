@@ -1,5 +1,7 @@
 package com.mtdagar.horoscopepredictions.adapters
 
+
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,14 +9,18 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mtdagar.horoscopepredictions.MainActivityInterface
 import com.mtdagar.horoscopepredictions.Networking
 import com.mtdagar.horoscopepredictions.R
 import com.mtdagar.horoscopepredictions.models.HoroItem
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.*
+import omari.hamza.storyview.model.MyStory
+import java.util.*
 
 
-class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentManager: FragmentManager) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
+class HoroAdapter(private val horoList: List<HoroItem>, private val mainActivityInterface: MainActivityInterface) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoroViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -36,7 +42,18 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val fragmentMana
 
             holder.progressBar.visibility = View.VISIBLE
 
-            Networking(holder.progressBar).getStories(currentSign, fragmentManager)
+            CoroutineScope(IO).launch {
+                Networking(holder.progressBar).getStories(currentSign, object : Networking.NetworkingInterface{
+                    override fun onResponse(sign: String, list: ArrayList<MyStory>) {
+                        Log.i("Response from interface", list.toString())
+                        mainActivityInterface.popStory(sign, list)
+                    }
+
+                    override fun onError(message: String) {
+                        Log.i("error", message)
+                    }
+                })
+            }
 
 
         }
