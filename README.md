@@ -1,5 +1,5 @@
 # HoroscopePredictions
-## A Horoscope Prediction App based on Aztro API
+A Modular Horoscope Prediction App based on the Aztro API
 
 
 # Screenshots
