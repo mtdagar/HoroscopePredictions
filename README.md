@@ -5,3 +5,8 @@ Horoscope Prediction App based on Aztro API
 <img src="https://github.com/mtdagar/HoroscopePredictions/blob/main/screenshots/screenshot1.jpg" alt="Screenshot" width = "200" >
 <img src="https://github.com/mtdagar/HoroscopePredictions/blob/main/screenshots/screenshot2.jpg" alt="Screenshot" width = "200" >
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
