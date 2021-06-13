@@ -14,6 +14,7 @@ import com.mtdagar.horoscopepredictions.MainActivityInterface
 import com.mtdagar.horoscopepredictions.Networking
 import com.mtdagar.horoscopepredictions.R
 import com.mtdagar.horoscopepredictions.models.HoroItem
+import com.mtdagar.horoscopepredictions.models.HoroStory
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.*
 import omari.hamza.storyview.model.MyStory
@@ -44,9 +45,9 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val mainActivity
 
             CoroutineScope(IO).launch {
                 Networking(holder.progressBar).getStories(currentSign, object : Networking.NetworkingInterface{
-                    override fun onResponse(sign: String, list: ArrayList<MyStory>) {
+                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory) {
                         Log.i("Response from interface", list.toString())
-                        mainActivityInterface.popStory(sign, list)
+                        mainActivityInterface.popStory(sign, list, horoObject)
                     }
 
                     override fun onError(message: String) {

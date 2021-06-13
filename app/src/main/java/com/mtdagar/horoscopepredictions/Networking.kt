@@ -20,7 +20,7 @@ import java.util.*
 class Networking constructor(var progressBar: View) {
 
     interface NetworkingInterface {
-        fun onResponse(sign: String, list: ArrayList<MyStory>)
+        fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory)
 
         fun onError(message: String)
     }
@@ -50,6 +50,7 @@ class Networking constructor(var progressBar: View) {
     fun getStories(Sign: String, networkingInterface: NetworkingInterface) {
         val sign = Sign.lowercase()
         val myStories = ArrayList<MyStory>()
+        lateinit var horoObject: HoroStory
 
         for (i in 0..2) {
             var day: String = ""
@@ -89,6 +90,7 @@ class Networking constructor(var progressBar: View) {
                 val gson = Gson()
 
                 val horoData = gson.fromJson(result.toString(), HoroStory::class.java)
+                horoObject = horoData
                 myStories.add(
                     MyStory(
                         image,
@@ -101,7 +103,7 @@ class Networking constructor(var progressBar: View) {
             }
         }
 
-        networkingInterface.onResponse(sign, myStories)
+        networkingInterface.onResponse(sign, myStories, horoObject)
 
     }
 }

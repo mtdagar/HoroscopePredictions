@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.models.HoroItem
+import com.mtdagar.horoscopepredictions.models.HoroStory
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         return list
     }
 
-    override fun popStory(sign: String, list: ArrayList<MyStory>){
+    override fun popStory(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory){
         var logoUrl: String = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
         when(sign){
             "aquarius" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
             .setStoriesList(list) // Required
             .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
             .setTitleText(sign) // Default is Hidden
-            .setSubtitleText("") // Default is Hidden
+            .setSubtitleText("Compatibility: ${horoObject.compatibility}") // Default is Hidden
             .setTitleLogoUrl(logoUrl) // Default is Hidden
             .setStoryClickListeners(object : StoryClickListeners {
                 override fun onDescriptionClickListener(position: Int) {
@@ -123,5 +124,5 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
 }
 
 interface MainActivityInterface{
-    fun popStory(sign: String, list: java.util.ArrayList<MyStory>)
+    fun popStory(sign: String, list: java.util.ArrayList<MyStory>, horoObject: HoroStory)
 }
