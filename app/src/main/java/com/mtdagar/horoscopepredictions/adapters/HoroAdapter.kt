@@ -53,6 +53,7 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val mainActivity
                         Log.i("error", message)
                     }
                 })
+                holder.progressBar.visibility = View.INVISIBLE
             }
 
 

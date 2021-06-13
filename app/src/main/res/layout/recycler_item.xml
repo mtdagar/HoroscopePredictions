@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             app:portion_spacing="4dp"
             app:portion_width="4dp"
-            app:portions_count="5" />
+            app:portions_count="3" />
 
         <ProgressBar
             android:id="@+id/progressBar"
