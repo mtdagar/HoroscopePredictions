@@ -2,24 +2,29 @@ package com.mtdagar.horoscopepredictions
 
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
+import com.mtdagar.horoscopepredictions.data.Horo
+import com.mtdagar.horoscopepredictions.data.HoroViewModel
 import com.mtdagar.horoscopepredictions.models.HoroItem
 import com.mtdagar.horoscopepredictions.models.HoroStory
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
 
+/**
+ * created by Meet Dagar
+ * on 01/06/21
+ **/
 
 class MainActivity : AppCompatActivity(), MainActivityInterface {
 
-
-    lateinit var progressBar: ProgressBar
+    private lateinit var mHoroViewModel: HoroViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +37,10 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         recyclerView.setHasFixedSize(true)  //for optimization
 
         AndroidNetworking.initialize(applicationContext);
+
+        mHoroViewModel = ViewModelProvider(this).get(HoroViewModel::class.java)
+
+        insertDataToDatabase()
 
     }
 
@@ -119,6 +128,22 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
             }) // Optional Listeners
             .build() // Must be called before calling show method
             .show()
+    }
+
+    private fun insertDataToDatabase(){
+        val color: String = "red"
+        val compatibility: String = "single"
+        val currentDate: String = "idk"
+        val dateRange: String = "idk"
+        val description: String = "idk"
+        val luckyNumber: String = "idk"
+        val luckyTime: String = "idk"
+        val mood: String = "idk"
+
+        val horo = Horo(0, color, compatibility, currentDate, dateRange, description, luckyNumber, luckyTime, mood)
+        mHoroViewModel.addHoro(horo)
+        Toast.makeText(this, "Successfully Added!", Toast.LENGTH_SHORT).show()
+
     }
 
 }
