@@ -2,17 +2,11 @@ package com.mtdagar.horoscopepredictions
 
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.ANResponse
 import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.gson.Gson
-import com.mtdagar.horoscopepredictions.models.HoroStory
-import omari.hamza.storyview.StoryView
-import omari.hamza.storyview.callback.StoryClickListeners
+import com.mtdagar.horoscopepredictions.model.HoroStory
 import omari.hamza.storyview.model.MyStory
 import org.json.JSONObject
 import java.util.*

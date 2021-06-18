@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.MainActivityInterface
 import com.mtdagar.horoscopepredictions.Networking
 import com.mtdagar.horoscopepredictions.R
-import com.mtdagar.horoscopepredictions.models.HoroItem
-import com.mtdagar.horoscopepredictions.models.HoroStory
+import com.mtdagar.horoscopepredictions.model.HoroItem
+import com.mtdagar.horoscopepredictions.model.HoroStory
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.*
 import omari.hamza.storyview.model.MyStory

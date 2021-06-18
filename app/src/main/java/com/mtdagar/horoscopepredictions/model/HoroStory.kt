@@ -1,4 +1,4 @@
-package com.mtdagar.horoscopepredictions.models
+package com.mtdagar.horoscopepredictions.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

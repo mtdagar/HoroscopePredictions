@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.AndroidNetworking
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
-import com.mtdagar.horoscopepredictions.data.Horo
-import com.mtdagar.horoscopepredictions.data.HoroViewModel
-import com.mtdagar.horoscopepredictions.models.HoroItem
-import com.mtdagar.horoscopepredictions.models.HoroStory
+import com.mtdagar.horoscopepredictions.model.Horo
+import com.mtdagar.horoscopepredictions.viewmodel.HoroViewModel
+import com.mtdagar.horoscopepredictions.model.HoroItem
+import com.mtdagar.horoscopepredictions.model.HoroStory
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         insertDataToDatabase()
 
         mHoroViewModel.readAllData.observe(this, Observer { horo ->
-            Log.i("Cache Color:", horo[0].color)
+            Log.i("Cache Color:", horo.toString())
         })
 
 
