@@ -36,7 +36,7 @@ class HoroViewModel(application: Application): AndroidViewModel(application) {
 
     fun deleteAllHoro(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteHoro()
+            repository.deleteAllHoro()
         }
     }
 

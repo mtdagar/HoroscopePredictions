@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setTheme(R.style.Theme_HoroscopePredictions)
         setContentView(R.layout.activity_main)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
@@ -47,7 +49,6 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         mHoroViewModel.readAllData.observe(this, Observer { horo ->
             Log.i("Cache Color:", horo.toString())
         })
-
 
 
     }
