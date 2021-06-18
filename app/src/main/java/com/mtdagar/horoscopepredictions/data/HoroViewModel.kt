@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class HoroViewModel(application: Application): AndroidViewModel(application) {
 
-    private val readAllData: LiveData<List<Horo>>
+    val readAllData: LiveData<List<Horo>>
     private val repository: HoroRepository
 
 

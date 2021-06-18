@@ -2,8 +2,10 @@ package com.mtdagar.horoscopepredictions
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +43,12 @@ class MainActivity : AppCompatActivity(), MainActivityInterface {
         mHoroViewModel = ViewModelProvider(this).get(HoroViewModel::class.java)
 
         insertDataToDatabase()
+
+        mHoroViewModel.readAllData.observe(this, Observer { horo ->
+            Log.i("Cache Color:", horo[0].color)
+        })
+
+
 
     }
 
