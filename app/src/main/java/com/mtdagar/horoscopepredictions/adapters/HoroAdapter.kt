@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.HomeActivityInterface
-import com.mtdagar.horoscopepredictions.MainActivityInterface
 import com.mtdagar.horoscopepredictions.Networking
 import com.mtdagar.horoscopepredictions.R
 import com.mtdagar.horoscopepredictions.model.HoroItem
