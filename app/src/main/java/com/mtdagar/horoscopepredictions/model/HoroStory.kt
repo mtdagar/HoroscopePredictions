@@ -20,5 +20,14 @@ data class HoroStory(
     @Json(name = "lucky_time")
     val luckyTime: String,
     @Json(name = "mood")
-    val mood: String
-)
+    val mood: String,
+    @Json(name = "day")
+    val day: String,
+    @Json(name = "sign")
+    val sign: String
+) {
+    constructor() : this("null", "null",
+        "null", "null", "null",
+        "null", "null", "null",
+        "null", "null")
+}

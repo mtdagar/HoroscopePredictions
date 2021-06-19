@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.mtdagar.horoscopepredictions.HomeActivityInterface
 import com.mtdagar.horoscopepredictions.MainActivityInterface
 import com.mtdagar.horoscopepredictions.Networking
 import com.mtdagar.horoscopepredictions.R
@@ -21,7 +22,7 @@ import omari.hamza.storyview.model.MyStory
 import java.util.*
 
 
-class HoroAdapter(private val horoList: List<HoroItem>, private val mainActivityInterface: MainActivityInterface) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
+class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivityInterface: HomeActivityInterface) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoroViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -44,10 +45,10 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val mainActivity
             holder.progressBar.visibility = View.VISIBLE
 
             CoroutineScope(IO).launch {
-                Networking(holder.progressBar).getStories(currentSign, object : Networking.NetworkingInterface{
+                Networking().getStories(currentSign, object : Networking.NetworkingInterface{
                     override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory) {
                         Log.i("Response from interface", list.toString())
-                        mainActivityInterface.popStory(sign, list, horoObject)
+                        homeActivityInterface.popStory(sign, list, horoObject)
                     }
 
                     override fun onError(message: String) {
