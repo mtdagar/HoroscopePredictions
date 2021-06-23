@@ -11,10 +11,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.HomeActivityInterface
-import com.mtdagar.horoscopepredictions.Networking
+import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.R
+import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.model.HoroItem
-import com.mtdagar.horoscopepredictions.model.HoroStory
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.*
 import omari.hamza.storyview.model.MyStory
@@ -45,7 +45,7 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivity
 
             CoroutineScope(IO).launch {
                 Networking().getStories(currentSign, object : Networking.NetworkingInterface{
-                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory) {
+                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: Horo) {
                         Log.i("Response from interface", list.toString())
                         homeActivityInterface.popStory(sign, list, horoObject)
                     }

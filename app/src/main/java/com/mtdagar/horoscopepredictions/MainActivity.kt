@@ -3,15 +3,12 @@ package com.mtdagar.horoscopepredictions
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.androidnetworking.AndroidNetworking
-import com.mtdagar.horoscopepredictions.data.HoroDao
-import com.mtdagar.horoscopepredictions.data.HoroDatabase
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
+import com.mtdagar.horoscopepredictions.network.Networking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

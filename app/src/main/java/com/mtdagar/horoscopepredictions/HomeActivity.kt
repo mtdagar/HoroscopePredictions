@@ -7,20 +7,17 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.androidnetworking.AndroidNetworking
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.model.HoroItem
-import com.mtdagar.horoscopepredictions.model.HoroStory
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
+import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.viewmodel.HoroViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
@@ -115,7 +112,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         return list
     }
 
-    override fun popStory(sign: String, list: ArrayList<MyStory>, horoObject: HoroStory){
+    override fun popStory(sign: String, list: ArrayList<MyStory>, horoObject: Horo){
         var logoUrl: String = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
         when(sign){
             "aquarius" -> logoUrl = Uri.parse("android.resource://com.mtdagar.horoscopepredictions/${R.drawable.aquarius_1}").toString()
@@ -174,5 +171,5 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 }
 
 interface HomeActivityInterface{
-    fun popStory(sign: String, list: java.util.ArrayList<MyStory>, horoObject: HoroStory)
+    fun popStory(sign: String, list: java.util.ArrayList<MyStory>, horoObject: Horo)
 }
