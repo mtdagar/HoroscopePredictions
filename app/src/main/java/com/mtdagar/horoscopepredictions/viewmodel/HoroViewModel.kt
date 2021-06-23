@@ -1,21 +1,18 @@
 package com.mtdagar.horoscopepredictions.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.mtdagar.horoscopepredictions.data.HoroDatabase
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.model.Horo
-import com.mtdagar.horoscopepredictions.model.HoroStory
 import kotlinx.coroutines.*
 
 class HoroViewModel(application: Application): AndroidViewModel(application) {
 
     val readAllData: LiveData<List<Horo>>
     private val repository: HoroRepository
-    private val firstStory = ArrayList<HoroStory?>()
+    private val firstStory = ArrayList<Horo?>()
 
 
     init{
@@ -43,7 +40,7 @@ class HoroViewModel(application: Application): AndroidViewModel(application) {
     }
 
 
-    fun getFirstStories(): ArrayList<HoroStory?>{
+    fun getFirstStories(): ArrayList<Horo?>{
         return firstStory
     }
 
