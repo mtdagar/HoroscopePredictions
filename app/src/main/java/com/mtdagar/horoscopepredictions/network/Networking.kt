@@ -1,14 +1,10 @@
-package com.mtdagar.horoscopepredictions
+package com.mtdagar.horoscopepredictions.network
 
 import android.util.Log
-import android.view.View
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.ANResponse
 import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.model.HoroStory
 import omari.hamza.storyview.model.MyStory
