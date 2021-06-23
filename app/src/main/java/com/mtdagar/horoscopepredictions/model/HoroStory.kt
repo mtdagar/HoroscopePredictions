@@ -1,33 +1,32 @@
 package com.mtdagar.horoscopepredictions.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
 
-@JsonClass(generateAdapter = true)
 data class HoroStory(
-    @Json(name = "color")
+    @SerializedName(value = "color")
     val color: String,
-    @Json(name = "compatibility")
+    @SerializedName(value = "compatibility")
     val compatibility: String,
-    @Json(name = "current_date")
+    @SerializedName(value = "current_date")
     val currentDate: String,
-    @Json(name = "date_range")
+    @SerializedName(value = "date_range")
     val dateRange: String,
-    @Json(name = "description")
+    @SerializedName(value = "description")
     val description: String,
-    @Json(name = "lucky_number")
+    @SerializedName(value = "lucky_number")
     val luckyNumber: String,
-    @Json(name = "lucky_time")
+    @SerializedName(value = "lucky_time")
     val luckyTime: String,
-    @Json(name = "mood")
+    @SerializedName(value = "mood")
     val mood: String,
-    @Json(name = "day")
+    @SerializedName(value = "day")
     val day: String,
-    @Json(name = "sign")
+    @SerializedName(value = "sign")
     val sign: String
-) {
-    constructor() : this("null", "null",
-        "null", "null", "null",
-        "null", "null", "null",
-        "null", "null")
-}
+)
+//{
+//    constructor() : this("null", "null",
+//        "null", "null", "null",
+//        "null", "null", "null",
+//        "null", "null")
+//}

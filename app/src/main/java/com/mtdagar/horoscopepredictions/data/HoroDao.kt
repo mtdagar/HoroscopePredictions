@@ -19,4 +19,7 @@ interface HoroDao {
     @Query("SELECT * FROM horo_table ORDER BY id ASC")
     fun readAllData(): LiveData<List<Horo>>
 
+    @Query("SELECT * FROM horo_table ORDER BY id ASC")
+    fun readData(): List<Horo>
+
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,40 +15,57 @@ import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.model.HoroItem
 import com.mtdagar.horoscopepredictions.model.HoroStory
+import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.viewmodel.HoroViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
 import omari.hamza.storyview.model.MyStory
 
+/**
+ * created by Meet Dagar
+ * on 01/06/21
+ **/
+
 class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
     private lateinit var mHoroViewModel: HoroViewModel
+    private lateinit var repository: HoroRepository
     private val networking: Networking = Networking()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_HoroscopePredictions)    //discard splash screen
         mHoroViewModel = ViewModelProvider(this).get(HoroViewModel::class.java)
-        AndroidNetworking.initialize(applicationContext);
 
-        lifecycleScope.launch(Dispatchers.IO){
-            mHoroViewModel.loadFirstStories()
-        }
+
+
+
+//        lifecycleScope.launch(Dispatchers.IO){
+//            mHoroViewModel.loadFirstStories()
+//        }
 
         setContentView(R.layout.activity_home)
 
-        Log.i("ViewModel", mHoroViewModel.getFirstStories().toString())
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        val button: Button = findViewById(R.id.button)
+        button.setOnClickListener{
+            GlobalScope.launch(Dispatchers.IO) {
+                Log.i("stored", mHoroViewModel.readData().size.toString())
+                Log.i("stored", mHoroViewModel.readData().toString())
+            }
+        }
 
         recyclerView.adapter = HoroAdapter(signList(), this)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)  //for optimization
     }
 
-    private fun signList(): List<HoroItem>{
+
+        private fun signList(): List<HoroItem>{
         val list = ArrayList<HoroItem>()
         for(i in 0 until 11){
             var drawable = R.drawable.ic_horoscope_card
@@ -142,9 +160,14 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         val luckyNumber: String = "idk"
         val luckyTime: String = "idk"
         val mood: String = "idk"
+        val day: String = "today"
+        val sign: String = "libra"
 
-        val horo = Horo(0, color, compatibility, currentDate, dateRange, description, luckyNumber, luckyTime, mood)
-        mHoroViewModel.addHoro(horo)
+        val horo = Horo(0, color, compatibility, currentDate, dateRange, description, luckyNumber, luckyTime, mood, day, sign)
+        GlobalScope.launch(Dispatchers.IO) {
+            repository.addHoro(horo)
+        }
+
         Toast.makeText(this, "Successfully Added!", Toast.LENGTH_SHORT).show()
 
     }
