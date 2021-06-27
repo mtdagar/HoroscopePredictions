@@ -54,6 +54,7 @@ dependencies {
     //Custom StoryProgressView
     implementation 'com.github.mtdagar:StoriesProgressView:3.0.1'
 
+
     //Networking library
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 

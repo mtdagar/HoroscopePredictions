@@ -43,21 +43,11 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivity
 
         holder.cardView.setOnClickListener{
 
-            it.context.startActivity(Intent(it.context, StoryView::class.java))
+            holder.progressBar.visibility = View.VISIBLE
 
+            homeActivityInterface.showStory(currentSign)
 
-
-
-
-        //            holder.progressBar.visibility = View.VISIBLE
-//
-//            homeActivityInterface.showStory(currentSign)
-//
-//            holder.progressBar.visibility = View.INVISIBLE
-
-
-
-
+            holder.progressBar.visibility = View.INVISIBLE
 
 
 
