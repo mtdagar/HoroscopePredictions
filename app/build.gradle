@@ -51,6 +51,9 @@ dependencies {
     //Custom Story View
     implementation 'com.github.mtdagar:StoryView:1.0.7-beta'
 
+    //Custom StoryProgressView
+    implementation 'com.github.mtdagar:StoriesProgressView:3.0.1'
+
     //Networking library
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 

@@ -1,6 +1,7 @@
 package com.mtdagar.horoscopepredictions.adapters
 
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.HomeActivityInterface
 import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.R
+import com.mtdagar.horoscopepredictions.StoryView
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.model.HoroItem
 import kotlinx.coroutines.Dispatchers.IO
@@ -34,28 +36,44 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivity
     override fun onBindViewHolder(holder: HoroViewHolder, position: Int) {
         val currentItem = horoList[position]
 
-        val currentSign = currentItem.text
+        val currentSign = currentItem.text.lowercase()
 
         holder.imageView.setImageResource(currentItem.imageResource)
         holder.textView.text = currentSign
 
         holder.cardView.setOnClickListener{
 
-            holder.progressBar.visibility = View.VISIBLE
+            it.context.startActivity(Intent(it.context, StoryView::class.java))
 
-            CoroutineScope(IO).launch {
-                Networking().getStories(currentSign, object : Networking.NetworkingInterface{
-                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: Horo) {
-                        Log.i("Response from interface", list.toString())
-                        homeActivityInterface.popStory(sign, list, horoObject)
-                    }
 
-                    override fun onError(message: String) {
-                        Log.i("error", message)
-                    }
-                })
-                holder.progressBar.visibility = View.INVISIBLE
-            }
+
+
+
+        //            holder.progressBar.visibility = View.VISIBLE
+//
+//            homeActivityInterface.showStory(currentSign)
+//
+//            holder.progressBar.visibility = View.INVISIBLE
+
+
+
+
+
+
+
+        //            CoroutineScope(IO).launch {
+//                Networking().getStories(currentSign, object : Networking.NetworkingInterface{
+//                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: Horo) {
+//                        Log.i("Response from interface", list.toString())
+//                        homeActivityInterface.popStory(sign, list, horoObject)
+//                    }
+//
+//                    override fun onError(message: String) {
+//                        Log.i("error", message)
+//                    }
+//                })
+//                holder.progressBar.visibility = View.INVISIBLE
+//            }
 
 
         }

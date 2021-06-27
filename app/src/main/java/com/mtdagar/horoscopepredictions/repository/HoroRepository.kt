@@ -18,7 +18,6 @@ class HoroRepository() {
 
     private val networking: Networking = Networking()
     private val firstStory = ArrayList<Horo>()
-    val readAllData: LiveData<List<Horo>> = horoDao.readAllData()
 
     private val signs = arrayOf(
         "aries", "virgo", "taurus", "cancer", "gemini", "libra",
@@ -56,9 +55,7 @@ class HoroRepository() {
             GlobalScope.launch(Dispatchers.IO) {
                 val horo = getStory(sign, day)
                 if (horo != null) {
-                    Log.i("loadFirstStories", signs[i] + ": " + horo.toString())
                     firstStory.add(horo)
-                    Log.i("loadFirstStories", "data fetched for $sign $day")
                     addHoro(horo)
                     Log.i("loadFirstStories", "data stored for $sign $day")
                 }else{

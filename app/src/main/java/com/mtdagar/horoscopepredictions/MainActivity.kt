@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 5000
+    private val splashTimeOut: Long = 1000
     private lateinit var repository: HoroRepository
     private val networking: Networking = Networking()
 
@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         AndroidNetworking.initialize(applicationContext);
 
         repository = HoroRepository()
+
+//        GlobalScope.launch(Dispatchers.IO) {
+//            repository.deleteAllHoro()
+//        }
+
 
         repository.loadFirstStories()
 

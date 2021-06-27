@@ -17,7 +17,7 @@ interface HoroDao {
     fun deleteAllHoro()
 
     @Query("SELECT * FROM horo_table ORDER BY id ASC")
-    fun readAllData(): LiveData<List<Horo>>
+    fun readAllData(): List<Horo>
 
     @Query("SELECT * FROM horo_table ORDER BY id ASC")
     fun readData(): List<Horo>
