@@ -1,5 +1,6 @@
 package com.mtdagar.horoscopepredictions
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -41,6 +43,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_HoroscopePredictions)    //discard splash screen
+
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
 
