@@ -40,23 +40,6 @@ class HoroAdapter(private val horoCardList: List<HoroCardItem>, private val home
 
             holder.progressBar.visibility = View.INVISIBLE
 
-
-
-        //            CoroutineScope(IO).launch {
-//                Networking().getStories(currentSign, object : Networking.NetworkingInterface{
-//                    override fun onResponse(sign: String, list: ArrayList<MyStory>, horoObject: Horo) {
-//                        Log.i("Response from interface", list.toString())
-//                        homeActivityInterface.popStory(sign, list, horoObject)
-//                    }
-//
-//                    override fun onError(message: String) {
-//                        Log.i("error", message)
-//                    }
-//                })
-//                holder.progressBar.visibility = View.INVISIBLE
-//            }
-
-
         }
 
     }
