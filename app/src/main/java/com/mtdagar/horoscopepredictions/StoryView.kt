@@ -7,16 +7,24 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.mtdagar.horoscopepredictions.model.Horo
+import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
 import jp.shts.android.storiesprogressview.StoriesProgressView
 
 
 class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
+    private lateinit var storyViewModel: StoryViewModel
+
     private var storiesProgressView: StoriesProgressView? = null
     private var storyImageView: ImageView? = null
     private lateinit var storyDescription: TextView
+    private lateinit var storyProgressBar: ProgressBar
 
     //shift to viewmodel
     private var counter = 0
@@ -71,13 +79,18 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         setContentView(R.layout.activity_story_view)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
+
         setContentView(R.layout.activity_story_view)
 
-
+        //horo from intent
         firstHoro = intent.extras?.getParcelable("firstStory") as Horo?
 
 
         storiesProgressView = findViewById<View>(R.id.stories) as StoriesProgressView
+
+        storyProgressBar = findViewById(R.id.storyProgressBar)
 
         storiesProgressView!!.setStoriesCount(storiesCount)
         storiesProgressView!!.setStoryDuration(3000L)
@@ -87,8 +100,19 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         storiesProgressView!!.startStories(counter)
 
 
+
         storyImageView = findViewById<View>(R.id.image) as ImageView
         storyDescription = findViewById(R.id.storyDescription)
+
+
+        storyViewModel.tomorrowLoaded.observe(this, androidx.lifecycle.Observer {
+            if(it && counter==1){
+                storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+            }else if(it==false && counter==1){
+                storyProgressBar.visibility = View.INVISIBLE
+                storyViewModel.loadTomorrow(firstHoro?.sign!!)
+            }
+        })
 
         //storyImageView!!.setImageResource(resources[counter])
         storyDescription.text = "Today: " + firstHoro!!.description
@@ -113,9 +137,9 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
     }
 
     //call when counter changes from viewmodel
-//    fun updateStory(counter: Int){
-//        storyDescription.text = (++counter).toString()
-//    }
+    //    fun updateStory(counter: Int){
+    //        storyDescription.text = (++counter).toString()
+    //    }
 
     override fun onNext() {
         //move to next progress view of story.
@@ -124,6 +148,14 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         //increment counter in viewmodel
         //viewModel.next()
 
+
+        counter++
+        if(storyViewModel.tomorrowLoaded.value == true){
+            storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+        }else{
+            storyViewModel.loadTomorrow(firstHoro?.sign!!)
+        }
+
     }
 
 
@@ -131,8 +163,10 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         //move to previous progress view of story.
         if (counter - 1 < 0) return
 
+        counter--
 
-        storyDescription.text = (--counter).toString()
+        if(counter==0)
+        storyDescription.text = firstHoro!!.description
 
 
 //        if(counter == 0)

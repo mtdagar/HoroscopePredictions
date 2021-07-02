@@ -1,8 +1,7 @@
 package com.mtdagar.horoscopepredictions
 
-import android.app.Activity
+
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -18,15 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.model.Horo
-import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import omari.hamza.storyview.StoryView
-import omari.hamza.storyview.callback.StoryClickListeners
-import omari.hamza.storyview.model.MyStory
 import java.util.*
 import kotlin.collections.ArrayList
 
