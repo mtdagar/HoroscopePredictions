@@ -1,14 +1,16 @@
 package com.mtdagar.horoscopepredictions
 
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.androidnetworking.AndroidNetworking
 import com.mtdagar.horoscopepredictions.model.Horo
-import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.network.Networking
+import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 5000
+    private val splashTimeOut: Long = 1000
     private lateinit var repository: HoroRepository
     private val networking: Networking = Networking()
 
@@ -33,7 +35,17 @@ class MainActivity : AppCompatActivity() {
 
         repository = HoroRepository()
 
-        repository.loadFirstStories()
+//        GlobalScope.launch(Dispatchers.IO) {
+//            repository.deleteAllHoro()
+//        }
+
+        GlobalScope.launch(Dispatchers.IO) {
+            repository.loadFirstStories()
+        }
+
+        Log.i("currentDate", repository.getCurrentDate())
+
+
 
 
         Handler().postDelayed(Runnable {
@@ -42,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         }, splashTimeOut)
 
     }
+
+
 
     private fun insertDataToDatabase(){
         val color: String = "red"
