@@ -4,6 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -44,19 +47,9 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
 
-
         setContentView(R.layout.activity_home)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        val button: Button = findViewById(R.id.button)
-        button.setOnClickListener {
-
-
-//            GlobalScope.launch(Dispatchers.IO) {
-//                Log.i("stored", homeViewModel.readData().size.toString())
-//                Log.i("stored", homeViewModel.readData().toString())
-//            }
-        }
 
         homeViewModel.horoCards().observe(this, androidx.lifecycle.Observer {
             recyclerView.adapter = HoroAdapter(it, this)
@@ -66,8 +59,21 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         //recyclerView.setHasFixedSize(true)  //for optimization
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_home, menu)
+        return true
+    }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_developer -> {
+                startActivity(Intent(this@HomeActivity, DeveloperActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun showStory(sign: String) {
 

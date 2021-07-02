@@ -2,7 +2,6 @@ package com.mtdagar.horoscopepredictions.repository
 
 import android.icu.util.Calendar
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.mtdagar.horoscopepredictions.HoroApplication
 import com.mtdagar.horoscopepredictions.data.HoroDatabase
 import com.mtdagar.horoscopepredictions.model.Horo
@@ -25,6 +24,10 @@ class HoroRepository() {
         "sagittarius", "aquarius", "pisces", "capricorn", "scorpio",
         "leo"
     )
+
+    fun getSigns(): Array<String>{
+        return signs
+    }
 
     fun getCurrentDate(): String {
         val monthName = arrayOf(
@@ -98,5 +101,8 @@ class HoroRepository() {
         }
 
     }
+
+
+
 
 }
