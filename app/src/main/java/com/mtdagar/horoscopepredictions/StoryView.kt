@@ -86,6 +86,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         //horo from intent
         firstHoro = intent.extras?.getParcelable("firstStory") as Horo?
+        storyViewModel.horoToday = firstHoro
 
 
         storiesProgressView = findViewById<View>(R.id.stories) as StoriesProgressView
@@ -111,6 +112,15 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
             }else if(it==false && counter==1){
                 storyProgressBar.visibility = View.INVISIBLE
                 storyViewModel.loadTomorrow(firstHoro?.sign!!)
+            }
+        })
+
+        storyViewModel.yesterdayLoaded.observe(this, androidx.lifecycle.Observer {
+            if(it && counter==2){
+                storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
+            }else if(it==false && counter==2){
+                storyProgressBar.visibility = View.INVISIBLE
+                storyViewModel.loadYesterday(firstHoro?.sign!!)
             }
         })
 
@@ -147,14 +157,26 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         //increment counter in viewmodel
         //viewModel.next()
-
-
         counter++
-        if(storyViewModel.tomorrowLoaded.value == true){
-            storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
-        }else{
-            storyViewModel.loadTomorrow(firstHoro?.sign!!)
+
+        when(counter){
+            1 -> {
+                if(storyViewModel.tomorrowLoaded.value == true){
+                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+                }else{
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }
+            }
+            2 -> {
+                if(storyViewModel.yesterdayLoaded.value == true){
+                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
+                }else{
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }
+            }
         }
+
+
 
     }
 
@@ -165,8 +187,25 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         counter--
 
-        if(counter==0)
-        storyDescription.text = firstHoro!!.description
+        when(counter){
+            0 -> {
+                storyDescription.text = "Today: " + firstHoro!!.description
+            }
+            1 -> {
+                if(storyViewModel.tomorrowLoaded.value == true){
+                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+                }else{
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }
+            }
+            2 -> {
+                if(storyViewModel.yesterdayLoaded.value == true){
+                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
+                }else{
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }
+            }
+        }
 
 
 //        if(counter == 0)
