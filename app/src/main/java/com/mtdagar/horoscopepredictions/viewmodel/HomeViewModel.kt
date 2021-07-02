@@ -65,7 +65,6 @@ class HomeViewModel: ViewModel() {
     }
 
     suspend fun readData(): List<Horo>{
-
         return repository.readHoro()
     }
 

@@ -51,7 +51,6 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         val button: Button = findViewById(R.id.button)
         button.setOnClickListener {
 
-            homeViewModel.test()
 
 //            GlobalScope.launch(Dispatchers.IO) {
 //                Log.i("stored", homeViewModel.readData().size.toString())
@@ -64,10 +63,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
             recyclerView.layoutManager = LinearLayoutManager(this)
         })
 
-
-
-
-//        recyclerView.setHasFixedSize(true)  //for optimization
+        //recyclerView.setHasFixedSize(true)  //for optimization
     }
 
 
@@ -83,7 +79,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
 
 //        lifecycleScope.launch {
-//            data = mHomeViewModel.readData()
+//
 //
 //            for(i in data){
 //                if(i.sign == sign) {

@@ -1,5 +1,6 @@
 package com.mtdagar.horoscopepredictions.repository
 
+import android.icu.util.Calendar
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.mtdagar.horoscopepredictions.HoroApplication
@@ -16,7 +17,7 @@ class HoroRepository() {
 
     private val horoDao = HoroDatabase.getDatabase(HoroApplication.applicationContext()).horoDao()
 
-    private val networking: Networking = Networking()
+    private val networking = Networking()
     private val firstStory = ArrayList<Horo>()
 
     private val signs = arrayOf(
@@ -24,6 +25,20 @@ class HoroRepository() {
         "sagittarius", "aquarius", "pisces", "capricorn", "scorpio",
         "leo"
     )
+
+    fun getCurrentDate(): String {
+        val monthName = arrayOf(
+            "January", "February", "March", "April", "May", "June", "July",
+            "August", "September", "October", "November",
+            "December"
+        )
+        val calendar = Calendar.getInstance()
+        val month = monthName[calendar.get(Calendar.MONTH)]
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = calendar.get(Calendar.YEAR)
+
+        return "$month $day,$year"
+    }
 
     suspend fun addHoro(horo: Horo) {
         horoDao.addHoro(horo)
@@ -47,25 +62,41 @@ class HoroRepository() {
         return networking.fetchData(sign, day)
     }
 
-    fun loadFirstStories() {
-        for (i in 0..11) {
-            var day = "today"
-            var sign = signs[i]
+    suspend fun loadFirstStories() {
+        val day = "today"
+        val currentDate = getCurrentDate()
 
-            GlobalScope.launch(Dispatchers.IO) {
-                val horo = getStory(sign, day)
-                if (horo != null) {
-                    firstStory.add(horo)
-                    addHoro(horo)
-                    Log.i("loadFirstStories", "data stored for $sign $day")
-                }else{
-                    Log.e("Error", "Networking error -> Network.getStory returning null")
+        val loadedData = readHoro()
+
+        fun loadStories(){
+            for (j in 0..11) {
+                val sign = signs[j]
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    val horo = getStory(sign, day)
+                    if (horo != null) {
+                        firstStory.add(horo)
+                        addHoro(horo)
+                        Log.i("loadFirstStories", "data stored for $sign $day")
+                    } else {
+                        Log.e("Error", "Networking error -> Network.getStory returning null")
+                    }
+                    Log.i("loadFirstStories", "sizeOfArray: " + firstStory.size.toString())
                 }
-
-                Log.i("loadFirstStories", "sizeOfArray: " + firstStory.size.toString())
             }
-
         }
+
+        if(loadedData.isNotEmpty()){
+            if(loadedData[0].currentDate != currentDate){
+
+                deleteAllHoro()
+
+                loadStories()
+            }
+        }else if(loadedData.isEmpty()){
+            loadStories()
+        }
+
     }
 
 }
