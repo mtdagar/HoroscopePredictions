@@ -1,6 +1,5 @@
 package com.mtdagar.horoscopepredictions
 
-import android.content.ClipDescription
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +18,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
     private var storyImageView: ImageView? = null
     private lateinit var storyDescription: TextView
 
+    //shift to viewmodel
     private var counter = 0
     private var storiesCount = 3
 
@@ -91,7 +91,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         storyDescription = findViewById(R.id.storyDescription)
 
         //storyImageView!!.setImageResource(resources[counter])
-        storyDescription.text = firstHoro!!.description
+        storyDescription.text = "Today: " + firstHoro!!.description
 
 
         // initializing previous view.
@@ -112,18 +112,38 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         skip.setOnTouchListener(onTouchListener)
     }
 
+    //call when counter changes from viewmodel
+//    fun updateStory(counter: Int){
+//        storyDescription.text = (++counter).toString()
+//    }
+
     override fun onNext() {
         //move to next progress view of story.
         //storyImageView!!.setImageResource(resources[++counter])
-        counter++
+
+        //increment counter in viewmodel
+        //viewModel.next()
+
     }
+
 
     override fun onPrev() {
         //move to previous progress view of story.
         if (counter - 1 < 0) return
 
+
+        storyDescription.text = (--counter).toString()
+
+
+//        if(counter == 0)
+//            storyDescription.text = "Today: " + firstHoro!!.description
+//        if(counter == 1)
+//            storyDescription.text = "Tomorrow: "
+//        if(counter == 2)
+//            storyDescription.text = "Yesterday: "
+
         //storyImageView!!.setImageResource(resources[--counter])
-        counter--
+
     }
 
     override fun onComplete() {

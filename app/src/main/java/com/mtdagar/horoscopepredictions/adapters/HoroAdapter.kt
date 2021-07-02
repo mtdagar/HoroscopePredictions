@@ -1,8 +1,6 @@
 package com.mtdagar.horoscopepredictions.adapters
 
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +10,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.HomeActivityInterface
-import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.R
-import com.mtdagar.horoscopepredictions.StoryView
-import com.mtdagar.horoscopepredictions.model.Horo
-import com.mtdagar.horoscopepredictions.model.HoroItem
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.*
-import omari.hamza.storyview.model.MyStory
-import java.util.*
+import com.mtdagar.horoscopepredictions.model.HoroCardItem
 
 
-class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivityInterface: HomeActivityInterface) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
+class HoroAdapter(private val horoCardList: List<HoroCardItem>, private val homeActivityInterface: HomeActivityInterface) : RecyclerView.Adapter<HoroAdapter.HoroViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HoroViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -34,7 +25,7 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivity
     }
 
     override fun onBindViewHolder(holder: HoroViewHolder, position: Int) {
-        val currentItem = horoList[position]
+        val currentItem = horoCardList[position]
 
         val currentSign = currentItem.text.lowercase()
 
@@ -70,7 +61,7 @@ class HoroAdapter(private val horoList: List<HoroItem>, private val homeActivity
 
     }
 
-    override fun getItemCount() = horoList.size
+    override fun getItemCount() = horoCardList.size
 
     class HoroViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val imageView: ImageView = itemView.findViewById(R.id.card_image)
