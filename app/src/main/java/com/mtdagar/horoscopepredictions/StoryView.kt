@@ -9,8 +9,6 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
@@ -25,18 +23,15 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
     private var storyImageView: ImageView? = null
     private lateinit var storyDescription: TextView
     private lateinit var storyProgressBar: ProgressBar
+    private lateinit var storySignImage: ImageView
+    private lateinit var storySignName: TextView
+    private lateinit var storyDateRange: TextView
+    private lateinit var storyDay: TextView
 
-    //shift to viewmodel
-    private var counter = 0
+
     private var storiesCount = 3
 
     var firstHoro: Horo? = null
-
-    private val resources = intArrayOf(
-        R.drawable.image1,
-        R.drawable.image2,
-        R.drawable.image3
-    )
 
     var pressTime = 0L
     var limit = 500L
@@ -92,40 +87,54 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         storiesProgressView = findViewById<View>(R.id.stories) as StoriesProgressView
 
         storyProgressBar = findViewById(R.id.storyProgressBar)
+        storySignImage = findViewById(R.id.signImage)
+        storySignName = findViewById(R.id.signName)
+        storyDateRange = findViewById(R.id.dateRange)
+        storyDay = findViewById(R.id.day)
 
         storiesProgressView!!.setStoriesCount(storiesCount)
         storiesProgressView!!.setStoryDuration(3000L)
 
         storiesProgressView!!.setStoriesListener(this)
 
-        storiesProgressView!!.startStories(counter)
+        storiesProgressView!!.startStories(storyViewModel.counter)
 
 
 
-        storyImageView = findViewById<View>(R.id.image) as ImageView
         storyDescription = findViewById(R.id.storyDescription)
 
 
-        storyViewModel.tomorrowLoaded.observe(this, androidx.lifecycle.Observer {
-            if(it && counter==1){
-                storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
-            }else if(it==false && counter==1){
+        storyViewModel.loading.observe(this, androidx.lifecycle.Observer{
+            if(it){
+                storyProgressBar.visibility = View.VISIBLE
+            }else{
                 storyProgressBar.visibility = View.INVISIBLE
+            }
+        })
+
+        //start loading next stories
+        storyViewModel.loadTomorrow(firstHoro?.sign!!)
+        storyViewModel.loadYesterday(firstHoro?.sign!!)
+
+        storyViewModel.tomorrowLoaded.observe(this, androidx.lifecycle.Observer {
+            if(it && storyViewModel.counter==1){
+                storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+            }else if(it==false && storyViewModel.counter==1){
                 storyViewModel.loadTomorrow(firstHoro?.sign!!)
             }
         })
 
         storyViewModel.yesterdayLoaded.observe(this, androidx.lifecycle.Observer {
-            if(it && counter==2){
+            if(it && storyViewModel.counter==2){
                 storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
-            }else if(it==false && counter==2){
-                storyProgressBar.visibility = View.INVISIBLE
+            }else if(it==false && storyViewModel.counter==2){
+                storyProgressBar.visibility = View.VISIBLE
                 storyViewModel.loadYesterday(firstHoro?.sign!!)
             }
         })
 
-        //storyImageView!!.setImageResource(resources[counter])
-        storyDescription.text = "Today: " + firstHoro!!.description
+        //set first story
+        updateStory(firstHoro, storyViewModel.counter)
 
 
         // initializing previous view.
@@ -146,51 +155,46 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         skip.setOnTouchListener(onTouchListener)
     }
 
-    //call when counter changes from viewmodel
-    //    fun updateStory(counter: Int){
-    //        storyDescription.text = (++counter).toString()
-    //    }
-
-    override fun onNext() {
-        //move to next progress view of story.
-        //storyImageView!!.setImageResource(resources[++counter])
-
-        //increment counter in viewmodel
-        //viewModel.next()
-        counter++
-
-        when(counter){
-            1 -> {
-                if(storyViewModel.tomorrowLoaded.value == true){
-                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
-                }else{
-                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
-                }
-            }
-            2 -> {
-                if(storyViewModel.yesterdayLoaded.value == true){
-                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
-                }else{
-                    storyViewModel.loadYesterday(firstHoro?.sign!!)
-                }
-            }
+    private fun updateStory(horo: Horo?, counter: Int){
+        when(horo!!.sign){
+            "aries" -> {storySignImage.setImageResource(R.drawable.aries)
+                storySignName.text = "Aries"}
+            "virgo" -> {storySignImage.setImageResource(R.drawable.virgo)
+                storySignName.text = "Virgo" }
+            "taurus" -> {storySignImage.setImageResource(R.drawable.taurus)
+                storySignName.text = "Taurus"}
+            "cancer" -> { storySignImage.setImageResource(R.drawable.cancer)
+                storySignName.text = "Cancer"}
+            "gemini" -> {storySignImage.setImageResource(R.drawable.gemini)
+                storySignName.text = "Gemini"}
+            "libra" -> {storySignImage.setImageResource(R.drawable.libra)
+                storySignName.text = "Libra"}
+            "sagittarius" -> {storySignImage.setImageResource(R.drawable.sagittarius)
+                storySignName.text = "Sagittarius" }
+            "aquarius" -> {storySignImage.setImageResource(R.drawable.aquarius)
+                storySignName.text = "Aquarius"}
+            "pisces" -> {storySignImage.setImageResource(R.drawable.pisces)
+                storySignName.text = "Pisces"}
+            "capricorn" -> {storySignImage.setImageResource(R.drawable.capricornus)
+                storySignName.text = "Capricorn"}
+            "scorpio" -> {storySignImage.setImageResource(R.drawable.scorpio)
+                storySignName.text = "Scorpio"}
+            "leo" -> {storySignImage.setImageResource(R.drawable.leo)
+                storySignName.text = "Leo"}
         }
 
-
-
+        storyDateRange.text = horo!!.dateRange
+        storyDay.text = horo!!.day
+        storyDescription.text = horo!!.description
     }
 
 
-    override fun onPrev() {
-        //move to previous progress view of story.
-        if (counter - 1 < 0) return
+    override fun onNext() {
+        //move to next progress view of story.
 
-        counter--
+        storyViewModel.counter++
 
-        when(counter){
-            0 -> {
-                storyDescription.text = "Today: " + firstHoro!!.description
-            }
+        when(storyViewModel.counter){
             1 -> {
                 if(storyViewModel.tomorrowLoaded.value == true){
                     storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
@@ -207,15 +211,33 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
             }
         }
 
+    }
 
-//        if(counter == 0)
-//            storyDescription.text = "Today: " + firstHoro!!.description
-//        if(counter == 1)
-//            storyDescription.text = "Tomorrow: "
-//        if(counter == 2)
-//            storyDescription.text = "Yesterday: "
+    override fun onPrev() {
+        //move to previous progress view of story.
+        if (storyViewModel.counter - 1 < 0) return
 
-        //storyImageView!!.setImageResource(resources[--counter])
+        storyViewModel.counter--
+
+        when(storyViewModel.counter){
+            0 -> {
+                storyDescription.text = storyViewModel.counter.toString() + "Today: " + firstHoro!!.description
+            }
+            1 -> {
+                if(storyViewModel.tomorrowLoaded.value == true){
+                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+                }else{
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }
+            }
+            2 -> {
+                if(storyViewModel.yesterdayLoaded.value == true){
+                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
+                }else{
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }
+            }
+        }
 
     }
 
