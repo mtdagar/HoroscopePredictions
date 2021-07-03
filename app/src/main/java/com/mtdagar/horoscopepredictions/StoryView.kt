@@ -20,7 +20,6 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
     private lateinit var storyViewModel: StoryViewModel
 
     private var storiesProgressView: StoriesProgressView? = null
-    private var storyImageView: ImageView? = null
     private lateinit var storyDescription: TextView
     private lateinit var storyProgressBar: ProgressBar
     private lateinit var storySignImage: ImageView
@@ -118,7 +117,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         storyViewModel.tomorrowLoaded.observe(this, androidx.lifecycle.Observer {
             if(it && storyViewModel.counter==1){
-                storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
+                updateStory(storyViewModel.horoTomorrow, storyViewModel.counter)
             }else if(it==false && storyViewModel.counter==1){
                 storyViewModel.loadTomorrow(firstHoro?.sign!!)
             }
@@ -126,9 +125,8 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         storyViewModel.yesterdayLoaded.observe(this, androidx.lifecycle.Observer {
             if(it && storyViewModel.counter==2){
-                storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
+                updateStory(storyViewModel.horoYesterday, storyViewModel.counter)
             }else if(it==false && storyViewModel.counter==2){
-                storyProgressBar.visibility = View.VISIBLE
                 storyViewModel.loadYesterday(firstHoro?.sign!!)
             }
         })
@@ -153,6 +151,72 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         }
 
         skip.setOnTouchListener(onTouchListener)
+    }
+
+
+    override fun onNext() {
+        //move to next progress view of story.
+
+        storyViewModel.counter++
+
+        when(storyViewModel.counter){
+            1 -> {
+                if(storyViewModel.tomorrowLoaded.value == true){
+                    updateStory(storyViewModel.horoTomorrow, storyViewModel.counter)
+                }else{
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }
+            }
+            2 -> {
+                if(storyViewModel.yesterdayLoaded.value == true){
+                    updateStory(storyViewModel.horoYesterday, storyViewModel.counter)
+                }else{
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }
+            }
+        }
+
+    }
+
+    override fun onPrev() {
+        //move to previous progress view of story.
+        if (storyViewModel.counter - 1 < 0) return
+
+        storyViewModel.counter--
+
+        when(storyViewModel.counter){
+            0 -> {
+                updateStory(firstHoro, storyViewModel.counter)
+            }
+            1 -> {
+                if(storyViewModel.tomorrowLoaded.value == true){
+                    updateStory(storyViewModel.horoTomorrow, storyViewModel.counter)
+                }else{
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }
+            }
+            2 -> {
+                if(storyViewModel.yesterdayLoaded.value == true){
+                    updateStory(storyViewModel.horoYesterday, storyViewModel.counter)
+                }else{
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }
+            }
+        }
+
+    }
+
+    override fun onComplete() {
+        //moving back to initial home activity
+        val intent = Intent(this@StoryView, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onDestroy() {
+        // Very important !
+        storiesProgressView!!.destroy()
+        super.onDestroy()
     }
 
     private fun updateStory(horo: Horo?, counter: Int){
@@ -183,74 +247,13 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
                 storySignName.text = "Leo"}
         }
 
+        when(counter){
+            0 -> storyDay.text = "Today"
+            1 -> storyDay.text = "Tomorrow"
+            2 -> storyDay.text = "Yesterday"
+        }
+
         storyDateRange.text = horo!!.dateRange
-        storyDay.text = horo!!.day
         storyDescription.text = horo!!.description
-    }
-
-
-    override fun onNext() {
-        //move to next progress view of story.
-
-        storyViewModel.counter++
-
-        when(storyViewModel.counter){
-            1 -> {
-                if(storyViewModel.tomorrowLoaded.value == true){
-                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
-                }else{
-                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
-                }
-            }
-            2 -> {
-                if(storyViewModel.yesterdayLoaded.value == true){
-                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
-                }else{
-                    storyViewModel.loadYesterday(firstHoro?.sign!!)
-                }
-            }
-        }
-
-    }
-
-    override fun onPrev() {
-        //move to previous progress view of story.
-        if (storyViewModel.counter - 1 < 0) return
-
-        storyViewModel.counter--
-
-        when(storyViewModel.counter){
-            0 -> {
-                storyDescription.text = storyViewModel.counter.toString() + "Today: " + firstHoro!!.description
-            }
-            1 -> {
-                if(storyViewModel.tomorrowLoaded.value == true){
-                    storyDescription.text = "Tomorrow: " + storyViewModel.horoTomorrow!!.description
-                }else{
-                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
-                }
-            }
-            2 -> {
-                if(storyViewModel.yesterdayLoaded.value == true){
-                    storyDescription.text = "Yesterday: " + storyViewModel.horoYesterday!!.description
-                }else{
-                    storyViewModel.loadYesterday(firstHoro?.sign!!)
-                }
-            }
-        }
-
-    }
-
-    override fun onComplete() {
-        //moving back to initial home activity
-        val intent = Intent(this@StoryView, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun onDestroy() {
-        // Very important !
-        storiesProgressView!!.destroy()
-        super.onDestroy()
     }
 }
