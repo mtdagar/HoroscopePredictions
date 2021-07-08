@@ -14,6 +14,9 @@ import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
 import jp.shts.android.storiesprogressview.StoriesProgressView
 
+//load images from glide
+//error handling
+//convert to custom view
 
 class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
@@ -90,6 +93,8 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         storySignName = findViewById(R.id.signName)
         storyDateRange = findViewById(R.id.dateRange)
         storyDay = findViewById(R.id.day)
+        storyDescription = findViewById(R.id.storyDescription)
+
 
         storiesProgressView!!.setStoriesCount(storiesCount)
         storiesProgressView!!.setStoryDuration(3000L)
@@ -98,9 +103,6 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
         storiesProgressView!!.startStories(storyViewModel.counter)
 
-
-
-        storyDescription = findViewById(R.id.storyDescription)
 
 
         storyViewModel.loading.observe(this, androidx.lifecycle.Observer{
@@ -253,7 +255,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
             2 -> storyDay.text = "Yesterday"
         }
 
-        storyDateRange.text = horo!!.dateRange
-        storyDescription.text = horo!!.description
+        storyDateRange.text = horo.dateRange
+        storyDescription.text = horo.description
     }
 }
