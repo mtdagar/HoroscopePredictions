@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mtdagar.horoscopepredictions.adapters.HoroAdapter
 import com.mtdagar.horoscopepredictions.model.Horo
+import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,12 +36,15 @@ import kotlin.collections.ArrayList
 class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var repository: HoroRepository
+    private val networking: Networking = Networking()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_HoroscopePredictions)    //discard splash screen
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        repository = HoroRepository()
 
 
         setContentView(R.layout.activity_home)
@@ -75,21 +80,43 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
         var data: List<Horo>
         var storyIndex: Int
 
-        lifecycleScope.launch {
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            //clear older data
+            repository.validateStoredData()
+
             //read pre loaded first stories
             data = homeViewModel.readData()
 
-            for(i in data){
-                if(i.sign == sign) {
-                    storyIndex = data.indexOf(i)
+            if(data.isNotEmpty()){
+                Log.i("showStory", "Loading first story from Database")
 
+                for(i in data){
+                    if(i.sign == sign) {
+                        storyIndex = data.indexOf(i)
+
+                        val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryView::class.java)
+                        intent.putExtra("firstStory", data[storyIndex])
+                        startActivity(intent)
+
+                        break
+                    }
+                }
+            }else{
+                Log.i("showStory", "Database empty, fetching first story from API.")
+
+                if(networking.isNetworkConnected()){
+                    val horo = repository.getStory(sign, "today")
                     val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryView::class.java)
-                    intent.putExtra("firstStory", data[storyIndex])
+                    intent.putExtra("firstStory", horo)
                     startActivity(intent)
-
-                    break
+                }else{
+                    Log.e("Error", "No internet connection found")
                 }
             }
+
+
         }
     }
 

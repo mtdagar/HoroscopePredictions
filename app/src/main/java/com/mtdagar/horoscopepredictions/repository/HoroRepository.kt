@@ -40,7 +40,7 @@ class HoroRepository() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val year = calendar.get(Calendar.YEAR)
 
-        return "$month $day,$year"
+        return "$month $day, $year"
     }
 
     suspend fun addHoro(horo: Horo) {
@@ -63,6 +63,21 @@ class HoroRepository() {
     //network call
     suspend fun getStory(sign: String, day: String): Horo? {
         return networking.fetchData(sign, day)
+    }
+
+    suspend fun validateStoredData(){
+        val currentDate = getCurrentDate()
+
+        val loadedData = readHoro()
+
+        if(loadedData.isNotEmpty()){
+            if(loadedData[0].currentDate != currentDate){
+                Log.i("validateStoredData", "Old data found. Deleting Database")
+                deleteAllHoro()
+            }else{
+                Log.i("validateStoredData", "Today's stories already present in Database")
+            }
+        }
     }
 
     suspend fun loadFirstStories() {
@@ -101,8 +116,4 @@ class HoroRepository() {
         }
 
     }
-
-
-
-
 }
