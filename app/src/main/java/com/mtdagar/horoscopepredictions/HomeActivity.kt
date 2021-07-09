@@ -112,7 +112,10 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
                     intent.putExtra("firstStory", horo)
                     startActivity(intent)
                 }else{
-                    Log.e("Error", "No internet connection found")
+                    lifecycleScope.launch{
+                        Toast.makeText(HoroApplication.applicationContext(), "Error loading story!\nNo internet connection found.", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
 
@@ -121,6 +124,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
     }
 
 }
+
 
 interface HomeActivityInterface {
     fun showStory(sign: String)
