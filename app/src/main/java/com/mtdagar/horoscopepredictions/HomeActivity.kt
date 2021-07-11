@@ -41,7 +41,6 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_HoroscopePredictions)    //discard splash screen
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         repository = HoroRepository()
