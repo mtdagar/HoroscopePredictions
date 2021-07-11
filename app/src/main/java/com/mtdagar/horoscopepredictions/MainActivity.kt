@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 /**
  * created by Meet Dagar
  * on 01/06/21
@@ -35,46 +34,23 @@ class MainActivity : AppCompatActivity() {
 
         repository = HoroRepository()
 
-//        GlobalScope.launch(Dispatchers.IO) {
-//            repository.deleteAllHoro()
-//        }
+        //if internet connected then load stories in splash
+        //else exit splash
+        if(networking.isNetworkConnected()){
+            GlobalScope.launch(Dispatchers.IO) {
+                repository.loadFirstStories()
+            }
 
-        GlobalScope.launch(Dispatchers.IO) {
-            repository.loadFirstStories()
-        }
-
-        Log.i("currentDate", repository.getCurrentDate())
-
-
-
-
-        Handler().postDelayed(Runnable {
+            Handler().postDelayed(Runnable {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }, splashTimeOut)
+        }else{
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }, splashTimeOut)
-
-    }
-
-
-
-    private fun insertDataToDatabase(){
-        val color: String = "red"
-        val compatibility: String = "single"
-        val currentDate: String = "idk"
-        val dateRange: String = "idk"
-        val description: String = "idk"
-        val luckyNumber: String = "idk"
-        val luckyTime: String = "idk"
-        val mood: String = "idk"
-        val day: String = "today"
-        val sign: String = "libra"
-
-        val horo = Horo(0, color, compatibility, currentDate, dateRange, description, luckyNumber, luckyTime, mood, day, sign)
-        GlobalScope.launch(Dispatchers.IO) {
-            repository.addHoro(horo)
         }
-        Toast.makeText(this, "Successfully Added!", Toast.LENGTH_SHORT).show()
 
     }
+
 }
 

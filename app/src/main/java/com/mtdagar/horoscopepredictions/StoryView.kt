@@ -9,18 +9,20 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.mtdagar.horoscopepredictions.model.Horo
+import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
 import jp.shts.android.storiesprogressview.StoriesProgressView
 
 //load images from glide
-//error handling
 //convert to custom view
 
 class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
     private lateinit var storyViewModel: StoryViewModel
+    private val networking: Networking = Networking()
 
     private var storiesProgressView: StoriesProgressView? = null
     private lateinit var storyDescription: TextView
@@ -114,14 +116,20 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
         })
 
         //start loading next stories
-        storyViewModel.loadTomorrow(firstHoro?.sign!!)
-        storyViewModel.loadYesterday(firstHoro?.sign!!)
+        if(networking.isNetworkConnected()){
+            storyViewModel.loadTomorrow(firstHoro?.sign!!)
+            storyViewModel.loadYesterday(firstHoro?.sign!!)
+        }
 
         storyViewModel.tomorrowLoaded.observe(this, androidx.lifecycle.Observer {
             if(it && storyViewModel.counter==1){
                 updateStory(storyViewModel.horoTomorrow, storyViewModel.counter)
             }else if(it==false && storyViewModel.counter==1){
-                storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                if(networking.isNetworkConnected()) {
+                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                }else{
+                    Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
+                }
             }
         })
 
@@ -129,7 +137,11 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
             if(it && storyViewModel.counter==2){
                 updateStory(storyViewModel.horoYesterday, storyViewModel.counter)
             }else if(it==false && storyViewModel.counter==2){
-                storyViewModel.loadYesterday(firstHoro?.sign!!)
+                if(networking.isNetworkConnected()) {
+                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                }else{
+                    Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
+                }
             }
         })
 
@@ -166,14 +178,22 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
                 if(storyViewModel.tomorrowLoaded.value == true){
                     updateStory(storyViewModel.horoTomorrow, storyViewModel.counter)
                 }else{
-                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                    if(networking.isNetworkConnected()) {
+                        storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                    }else{
+                        Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             2 -> {
                 if(storyViewModel.yesterdayLoaded.value == true){
                     updateStory(storyViewModel.horoYesterday, storyViewModel.counter)
                 }else{
-                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                    if(networking.isNetworkConnected()) {
+                        storyViewModel.loadYesterday(firstHoro?.sign!!)
+                    }else{
+                        Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

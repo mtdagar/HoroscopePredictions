@@ -1,15 +1,26 @@
 package com.mtdagar.horoscopepredictions.network
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.Log
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.ANResponse
 import com.androidnetworking.common.Priority
 import com.google.gson.Gson
+import com.mtdagar.horoscopepredictions.HoroApplication
 import com.mtdagar.horoscopepredictions.model.Horo
 import org.json.JSONObject
 
 
 class Networking {
+
+    fun isNetworkConnected(): Boolean{
+        val context = HoroApplication.applicationContext()
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
+    }
 
     suspend fun fetchData(sign: String, day: String): Horo? {
         val response: ANResponse<JSONObject> =
@@ -38,7 +49,6 @@ class Networking {
             Log.i("Response failed: ", response.error.toString())
             return null
         }
-
-
     }
+
 }
