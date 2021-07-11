@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
@@ -243,29 +244,65 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
     private fun updateStory(horo: Horo?, counter: Int){
         when(horo!!.sign){
-            "aries" -> {storySignImage.setImageResource(R.drawable.aries)
+            "aries" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/M9138KP/aries-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Aries"}
-            "virgo" -> {storySignImage.setImageResource(R.drawable.virgo)
+            "virgo" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/cbdT0hb/virgo-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Virgo" }
-            "taurus" -> {storySignImage.setImageResource(R.drawable.taurus)
+            "taurus" -> {
+                Glide.with(this)
+                .load("https://i.ibb.co/2hW3fr7/taurus-1.webp")
+                .into(storySignImage)
                 storySignName.text = "Taurus"}
-            "cancer" -> { storySignImage.setImageResource(R.drawable.cancer)
+            "cancer" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/wwHzRHS/cancer-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Cancer"}
-            "gemini" -> {storySignImage.setImageResource(R.drawable.gemini)
+            "gemini" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/YDQmKJz/gemini-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Gemini"}
-            "libra" -> {storySignImage.setImageResource(R.drawable.libra)
+            "libra" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/nRqLXgH/libra-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Libra"}
-            "sagittarius" -> {storySignImage.setImageResource(R.drawable.sagittarius)
+            "sagittarius" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/ccJK82F/sagittarius-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Sagittarius" }
-            "aquarius" -> {storySignImage.setImageResource(R.drawable.aquarius)
+            "aquarius" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/JzzVxyv/aquarius-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Aquarius"}
-            "pisces" -> {storySignImage.setImageResource(R.drawable.pisces)
+            "pisces" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/QFBcg2M/pisces-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Pisces"}
-            "capricorn" -> {storySignImage.setImageResource(R.drawable.capricornus)
+            "capricorn" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/chZHrFP/capricornus-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Capricorn"}
-            "scorpio" -> {storySignImage.setImageResource(R.drawable.scorpio)
+            "scorpio" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/DY9JvfB/scorpio-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Scorpio"}
-            "leo" -> {storySignImage.setImageResource(R.drawable.leo)
+            "leo" -> {
+                Glide.with(this)
+                    .load("https://i.ibb.co/ZdRxMt9/leo-1.webp")
+                    .into(storySignImage)
                 storySignName.text = "Leo"}
         }
 
