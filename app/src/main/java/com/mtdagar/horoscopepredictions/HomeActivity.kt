@@ -41,12 +41,10 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        repository = HoroRepository()
-
-
         setContentView(R.layout.activity_home)
+
+        repository = HoroRepository()
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
 
