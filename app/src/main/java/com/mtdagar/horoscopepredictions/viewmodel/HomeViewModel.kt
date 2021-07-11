@@ -16,6 +16,20 @@ class HomeViewModel: ViewModel() {
     private val repository = HoroRepository()
     private val firstStories = ArrayList<Horo?>()
 
+//    https://i.ibb.co/cbdT0hb/virgo-1.webp
+//    https://i.ibb.co/2hW3fr7/taurus-1.webp
+//    https://i.ibb.co/DY9JvfB/scorpio-1.webp
+//    https://i.ibb.co/ccJK82F/sagittarius-1.webp
+//    https://i.ibb.co/QFBcg2M/pisces-1.webp
+//    https://i.ibb.co/nRqLXgH/libra-1.webp
+//    https://i.ibb.co/ZdRxMt9/leo-1.webp
+//    https://i.ibb.co/YDQmKJz/gemini-1.webp
+//    https://i.ibb.co/chZHrFP/capricornus-1.webp
+//    https://i.ibb.co/wwHzRHS/cancer-1.webp
+//    https://i.ibb.co/M9138KP/aries-1.webp
+//    https://i.ibb.co/JzzVxyv/aquarius-1.webp
+
+
 
     init {
         horoCards = MutableLiveData<List<HoroCardItem>>(signList())

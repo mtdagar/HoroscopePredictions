@@ -17,7 +17,6 @@ import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
 import jp.shts.android.storiesprogressview.StoriesProgressView
 
 //load images from glide
-//error handling
 //convert to custom view
 
 class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
