@@ -1,6 +1,6 @@
 # HoroscopePredictions
-A Modular Horoscope Prediction App based on the Aztro API
 
+Horoscope Stories based on the Aztro API.
 
 # Screenshots
 
