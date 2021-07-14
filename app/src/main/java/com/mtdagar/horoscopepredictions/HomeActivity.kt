@@ -7,11 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,10 +19,8 @@ import com.mtdagar.horoscopepredictions.network.Networking
 import com.mtdagar.horoscopepredictions.repository.HoroRepository
 import com.mtdagar.horoscopepredictions.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -93,7 +88,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
                     if(i.sign == sign) {
                         storyIndex = data.indexOf(i)
 
-                        val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryView::class.java)
+                        val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryActivity::class.java)
                         intent.putExtra("firstStory", data[storyIndex])
                         startActivity(intent)
 
@@ -105,7 +100,7 @@ class HomeActivity : AppCompatActivity(), HomeActivityInterface {
 
                 if(networking.isNetworkConnected()){
                     val horo = repository.getStory(sign, "today")
-                    val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryView::class.java)
+                    val intent = Intent(this@HomeActivity, com.mtdagar.horoscopepredictions.StoryActivity::class.java)
                     intent.putExtra("firstStory", horo)
                     startActivity(intent)
                 }else{

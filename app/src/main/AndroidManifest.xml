@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HoroscopePredictions">
         <activity android:name=".DeveloperActivity" />
-        <activity android:name=".StoryView"
+        <activity android:name=".StoryActivity"
             android:theme="@style/Theme.Design.NoActionBar"/>
         <activity android:name=".HomeActivity"/>
 
