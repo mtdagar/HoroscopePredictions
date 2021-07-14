@@ -38,11 +38,10 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private val storyDay: TextView
 
     private var storiesCount = 3
-    private var counter = 0
     var pressTime = 0L
     var limit = 500L
 
-    var firstHoro: Horo? = null
+
 
     private val onTouchListener: OnTouchListener = object : OnTouchListener {
         override fun onTouch(v: View?, event: MotionEvent): Boolean {
@@ -78,9 +77,7 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     init {
 
-        var storyViewModel = ViewModelProvider(parentActivity).get(StoryViewModel::class.java)
-
-        firstHoro = storyViewModel.horoToday
+        storyViewModel = ViewModelProvider(parentActivity).get(StoryViewModel::class.java)
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -129,7 +126,7 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                     setStory(storyViewModel.horoTomorrow, storyViewModel.counter)
                 }else{
                     if(networking.isNetworkConnected()) {
-                        storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                        storyViewModel.loadTomorrow(storyViewModel.horoToday?.sign!!)
                     }else{
                         //Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
                     }
@@ -140,7 +137,7 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                     setStory(storyViewModel.horoYesterday, storyViewModel.counter)
                 }else{
                     if(networking.isNetworkConnected()) {
-                        storyViewModel.loadYesterday(firstHoro?.sign!!)
+                        storyViewModel.loadYesterday(storyViewModel.horoToday?.sign!!)
                     }else{
                         //Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
                     }
@@ -151,26 +148,28 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     override fun onPrev() {
         //move to previous progress view of story.
-        if (storyViewModel.counter - 1 < 0) return
+        if (storyViewModel.counter - 1 < 0){
+            onComplete()
+        }
 
         storyViewModel.counter--
 
         when(storyViewModel.counter){
             0 -> {
-                setStory(firstHoro, storyViewModel.counter)
+                setStory(storyViewModel.horoToday, storyViewModel.counter)
             }
             1 -> {
                 if(storyViewModel.tomorrowLoaded.value == true){
                     setStory(storyViewModel.horoTomorrow, storyViewModel.counter)
                 }else{
-                    storyViewModel.loadTomorrow(firstHoro?.sign!!)
+                    storyViewModel.loadTomorrow(storyViewModel.horoToday?.sign!!)
                 }
             }
             2 -> {
                 if(storyViewModel.yesterdayLoaded.value == true){
                     setStory(storyViewModel.horoYesterday, storyViewModel.counter)
                 }else{
-                    storyViewModel.loadYesterday(firstHoro?.sign!!)
+                    storyViewModel.loadYesterday(storyViewModel.horoToday?.sign!!)
                 }
             }
         }

@@ -34,7 +34,7 @@ class StoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_story)
-
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         storyViewModel = ViewModelProvider(this).get(StoryViewModel::class.java)
 
