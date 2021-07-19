@@ -1,8 +1,6 @@
 package com.mtdagar.horoscopepredictions
 
-import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -12,11 +10,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.mtdagar.horoscopepredictions.model.Horo
 import com.mtdagar.horoscopepredictions.network.Networking
@@ -24,10 +19,13 @@ import com.mtdagar.horoscopepredictions.viewmodel.StoryViewModel
 import jp.shts.android.storiesprogressview.StoriesProgressView
 
 
-class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : ConstraintLayout(context, attrs, defStyleAttr),StoriesProgressView.StoriesListener{
+class StoryView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), StoriesProgressView.StoriesListener {
 
-    private lateinit var storyViewModel: StoryViewModel
+    private var storyViewModel: StoryViewModel
     private val networking: Networking = Networking()
     private var storiesProgressView: StoriesProgressView? = null
     private val storyDescription: TextView
@@ -40,7 +38,6 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var storiesCount = 3
     var pressTime = 0L
     var limit = 500L
-
 
 
     private val onTouchListener: OnTouchListener = object : OnTouchListener {
@@ -120,25 +117,25 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     override fun onNext() {
         storyViewModel.counter++
 
-        when(storyViewModel.counter){
+        when (storyViewModel.counter) {
             1 -> {
-                if(storyViewModel.tomorrowLoaded.value == true){
+                if (storyViewModel.tomorrowLoaded.value == true) {
                     setStory(storyViewModel.horoTomorrow, storyViewModel.counter)
-                }else{
-                    if(networking.isNetworkConnected()) {
+                } else {
+                    if (networking.isNetworkConnected()) {
                         storyViewModel.loadTomorrow(storyViewModel.horoToday?.sign!!)
-                    }else{
+                    } else {
                         //Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             2 -> {
-                if(storyViewModel.yesterdayLoaded.value == true){
+                if (storyViewModel.yesterdayLoaded.value == true) {
                     setStory(storyViewModel.horoYesterday, storyViewModel.counter)
-                }else{
-                    if(networking.isNetworkConnected()) {
+                } else {
+                    if (networking.isNetworkConnected()) {
                         storyViewModel.loadYesterday(storyViewModel.horoToday?.sign!!)
-                    }else{
+                    } else {
                         //Toast.makeText(this, "Error loading story. Check internet connection.", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -148,27 +145,27 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     override fun onPrev() {
         //move to previous progress view of story.
-        if (storyViewModel.counter - 1 < 0){
+        if (storyViewModel.counter - 1 < 0) {
             onComplete()
         }
 
         storyViewModel.counter--
 
-        when(storyViewModel.counter){
+        when (storyViewModel.counter) {
             0 -> {
                 setStory(storyViewModel.horoToday, storyViewModel.counter)
             }
             1 -> {
-                if(storyViewModel.tomorrowLoaded.value == true){
+                if (storyViewModel.tomorrowLoaded.value == true) {
                     setStory(storyViewModel.horoTomorrow, storyViewModel.counter)
-                }else{
+                } else {
                     storyViewModel.loadTomorrow(storyViewModel.horoToday?.sign!!)
                 }
             }
             2 -> {
-                if(storyViewModel.yesterdayLoaded.value == true){
+                if (storyViewModel.yesterdayLoaded.value == true) {
                     setStory(storyViewModel.horoYesterday, storyViewModel.counter)
-                }else{
+                } else {
                     storyViewModel.loadYesterday(storyViewModel.horoToday?.sign!!)
                 }
             }
@@ -273,10 +270,10 @@ class StoryView@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         storyDescription.text = horo.description
     }
 
-    fun setProgressBarVisibility(isLoadingStory: Boolean){
-        if(isLoadingStory){
+    fun setProgressBarVisibility(isLoadingStory: Boolean) {
+        if (isLoadingStory) {
             storyProgressBar.visibility = View.VISIBLE
-        }else{
+        } else {
             storyProgressBar.visibility = View.INVISIBLE
         }
     }
