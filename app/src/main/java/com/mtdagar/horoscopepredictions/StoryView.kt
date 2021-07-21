@@ -202,8 +202,7 @@ class StoryView : AppCompatActivity(), StoriesProgressView.StoriesListener {
     }
 
     override fun onPrev() {
-        //move to previous progress view of story.
-        if (storyViewModel.counter - 1 < 0) return
+        if (storyViewModel.counter - 1 < 0) onComplete()
 
         storyViewModel.counter--
 
